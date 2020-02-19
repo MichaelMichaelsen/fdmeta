@@ -40,7 +40,7 @@ def main(argv):
   # Metadata file sections
   #
   sections = ['leveranceNavn', 'miljoe', 'fortroligData', 'dataOmfattetAfPersondataloven', 'MD5CheckSum', 'DatafordelerUdtraekstidspunkt', 'tilgaengelighedsperiode', 'AbonnementsOplysninger', 'BrugerUdfyldteParametre']
-  # specifying the zip file name 
+  # 
 
   metadata_file = ""
   metadata = ""
