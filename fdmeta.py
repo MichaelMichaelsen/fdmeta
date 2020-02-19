@@ -10,12 +10,14 @@ import os.path
 def extension(filename):
   regexpxml  = r"\.xml$"
   regexpjson = r"\.json$"
-  filenamelowercase = filname.lower()
+  filenamelowercase = filename.lower()
 
-  if (r.search(regexpxml,filenamelowercase)):
+  if (re.search(regexpxml,filenamelowercase)):
     return "xml"
-  else:
+  elif (re.search(regexpjson,filenamelowercase)):
     return "json"
+  else:
+    return "Unknown"
 
 def main(argv):
   file_name = ""
@@ -41,8 +43,8 @@ def main(argv):
 
   metadata_file = ""
   metadata = ""
+  regexp   = r'.*Metadata\.(json|xml)'
   #
-  print( extension(metadata_file))
 
   # opening the zip file in READ and extract the metadata file
   with ZipFile(file_name, 'r') as zip: 
@@ -50,39 +52,46 @@ def main(argv):
     zip.printdir()
     for file in zip.namelist():
       # print (file)
-      if re.search(regex,file):
+      if re.search(regexp,file):
         #
         # If this XML or JSON. The extension of the metadata file in the
         # zipped archive will tell.
         # 
         metadata_file = file
+        #print( metadata_file, extension(metadata_file))
         try:
           metadata = zip.read(file )
         except KeyError:
           print ('Error in reading metadata file')
         else:
-          metadata_json = json.loads( metadata )
-          print()
-          print( 'Metadata' )
-          for section in sections:
-            #
-            if (type(metadata_json[section]) is str):
-              print ( "%-30s \t: %s" % (section, metadata_json[section]) )
-            if (type(metadata_json[section]) is list):
-              print ( "%-30s \t:" % (section) )
-              #  
-              if (section == 'BrugerUdfyldteParametre'):
-                for arg in metadata_json[section]:
-                  for parameter in arg:
-                    if (parameter == "parameternavn"):
-                      print ( '\t%-20s\t: ' % (arg[parameter]), end="")
-                    else:
-                      print ( '%s' % (arg[parameter]))            
-              elif (section == "DatafordelerUdtraekstidspunkt" or section == 'AbonnementsOplysninger'):
-                #
-                for arg in metadata_json[section]:
-                  for parameter in arg:
-                    print ( '\t%-20s\t: %s' % (parameter,arg[parameter]))       
+          if (extension(metadata_file) == 'json'):
+            metadata_json = json.loads( metadata )
+            print()
+            print( 'Metadata' )
+            for section in sections:
+              #
+              if (type(metadata_json[section]) is str):
+                print ( "%-30s \t: %s" % (section, metadata_json[section]) )
+              if (type(metadata_json[section]) is list):
+                print ( "%-30s \t:" % (section) )
+                #  
+                if (section == 'BrugerUdfyldteParametre'):
+                  for arg in metadata_json[section]:
+                    for parameter in arg:
+                      if (parameter == "parameternavn"):
+                        print ( '\t%-20s\t: ' % (arg[parameter]), end="")
+                      else:
+                        print ( '%s' % (arg[parameter]))            
+                elif (section == "DatafordelerUdtraekstidspunkt" or section == 'AbonnementsOplysninger'):
+                  #
+                  for arg in metadata_json[section]:
+                    for parameter in arg:
+                      print ( '\t%-20s\t: %s' % (parameter,arg[parameter]))
+          elif(extension(metadata_file) == 'xml'):
+            print ('Decode xml')
+          else:
+            print ('Unknown file extension')
+            exit(2)   
 
 if __name__ == "__main__":
    main(sys.argv[1:])
