@@ -1,1 +1,1 @@
-python3 fdmeta.py -i data/EBR-XML-SP-v01_20191109120000.zip
+python3 fdmeta.py -i data/MAT-SFE-XML-v02_20190823111231.zip

@@ -96,9 +96,12 @@ def main(argv):
                       print ( '\t%-20s\t: %s' % (parameter,arg[parameter]))
           elif (extension(metadata_file) == 'xml'):
             print ('Decode xml')
-            tree = ET.parse(metadata_file)
-            root = tree.getroot()
-            print ( root.tag, root.attrib)
+            root = ET.fromstring(metadata)
+            print(type(root.attrib))
+            for section in sections:
+              print(section) 
+              for arg in root.findall(section):
+                 print (arg.tag, arg.text, type(arg))
           else:
             print ('Unknown file extension')
             exit(2)   
