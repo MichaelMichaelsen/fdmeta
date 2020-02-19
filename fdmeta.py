@@ -12,6 +12,12 @@ import xml.etree.ElementTree as ET
 import sys, getopt
 import os.path
 
+class metadata:
+  def __init__(self):
+    self.parameters = []
+
+  def setparam(self,section, name, value):
+    self.pamaters[section][name] = value
 
 def extension(filename):
   regexpxml  = r"\.xml$"
@@ -95,13 +101,20 @@ def main(argv):
                     for parameter in arg:
                       print ( '\t%-20s\t: %s' % (parameter,arg[parameter]))
           elif (extension(metadata_file) == 'xml'):
-            print ('Decode xml')
-            root = ET.fromstring(metadata)
-            print(type(root.attrib))
+
+            metadata_xml = xmltodict.parse(metadata)
+
+            print()
+            print('Metadata')
             for section in sections:
-              print(section) 
-              for arg in root.findall(section):
-                 print (arg.tag, arg.text, type(arg))
+              #
+              print(section, type(section), type(metadata_xml['FiludtraekMetadata'][section]))
+              if (type(metadata_xml['FiludtraekMetadata'][section]) is str):
+                print("%-30s \t: %s" %
+                      (section, metadata_xml['FiludtraekMetadata'][section]))
+              if (type(metadata_xml['FiludtraekMetadata'][section]) is dict):
+              #
+
           else:
             print ('Unknown file extension')
             exit(2)   
