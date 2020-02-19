@@ -4,6 +4,7 @@ import datetime
 import re
 import json
 import xmltodict
+import xml.etree.ElementTree as ET
 import sys, getopt
 import os.path
 
@@ -77,7 +78,7 @@ def main(argv):
                 print ( "%-30s \t:" % (section) )
                 #  
                 if (section == 'BrugerUdfyldteParametre'):
-                  for arg in metadata_json[section]git:
+                  for arg in metadata_json[section]:
                     for parameter in arg:
                       if (parameter == "parameternavn"):
                         print ( '\t%-20s\t: ' % (arg[parameter]), end="")
@@ -88,8 +89,11 @@ def main(argv):
                   for arg in metadata_json[section]:
                     for parameter in arg:
                       print ( '\t%-20s\t: %s' % (parameter,arg[parameter]))
-          elif(extension(metadata_file) == 'xml'):
+          elif (extension(metadata_file) == 'xml'):
             print ('Decode xml')
+            tree = ET.parse(metadata_file)
+            root = tree.getroot()
+            print ( root.tag, root.attrib)
           else:
             print ('Unknown file extension')
             exit(2)   
