@@ -45,8 +45,9 @@ def main(argv):
   metadata = ""
   regexp   = r'.*Metadata\.(json|xml)'
   #
-
+  #
   # opening the zip file in READ and extract the metadata file
+  #
   with ZipFile(file_name, 'r') as zip: 
     # printing all the contents of the zip file 
     zip.printdir()
@@ -76,7 +77,7 @@ def main(argv):
                 print ( "%-30s \t:" % (section) )
                 #  
                 if (section == 'BrugerUdfyldteParametre'):
-                  for arg in metadata_json[section]:
+                  for arg in metadata_json[section]git:
                     for parameter in arg:
                       if (parameter == "parameternavn"):
                         print ( '\t%-20s\t: ' % (arg[parameter]), end="")
