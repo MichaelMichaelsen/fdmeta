@@ -1,1 +1,1 @@
-python3 fdmeta.py -i data/DAR-Totaludtraek-Ugentlig-JSON_20191208000500.zip
+python3 fdmeta.py -i data/DAF-TU-MAT-SFE_20200114114225.zip

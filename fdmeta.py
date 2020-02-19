@@ -1,4 +1,8 @@
-# importing required modules 
+#!/usr/bin/python3
+#
+# fdmeta
+#
+# 
 from zipfile import ZipFile
 import datetime
 import re
@@ -7,6 +11,7 @@ import xmltodict
 import xml.etree.ElementTree as ET
 import sys, getopt
 import os.path
+
 
 def extension(filename):
   regexpxml  = r"\.xml$"
