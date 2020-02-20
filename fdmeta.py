@@ -17,7 +17,7 @@ class metadata:
     self.parameters = []
 
   def setparam(self,section, name, value):
-    self.pamaters[section][name] = value
+    self.parameters[section][name] = value
 
 def extension(filename):
   regexpxml  = r"\.xml$"
@@ -101,20 +101,21 @@ def main(argv):
                     for parameter in arg:
                       print ( '\t%-20s\t: %s' % (parameter,arg[parameter]))
           elif (extension(metadata_file) == 'xml'):
-
             metadata_xml = xmltodict.parse(metadata)
-
-            print()
             print('Metadata')
-            for section in sections:
-              #
-              print(section, type(section), type(metadata_xml['FiludtraekMetadata'][section]))
+            for section in metadata_xml['FiludtraekMetadata'].keys():
+              # print(type(metadata_xml['FiludtraekMetadata'][section]))
               if (type(metadata_xml['FiludtraekMetadata'][section]) is str):
-                print("%-30s \t: %s" %
-                      (section, metadata_xml['FiludtraekMetadata'][section]))
-              if (type(metadata_xml['FiludtraekMetadata'][section]) is dict):
-              #
-
+                print("%-30s \t: %s" % (section, metadata_xml['FiludtraekMetadata'][section]))
+              else:
+                # print('Dict ', type(metadata_xml['FiludtraekMetadata'][section]))
+                print(section)
+                if (section == 'BrugerUdfyldteParametre' ):
+                  for p in range(len(metadata_xml['FiludtraekMetadata'][section]['parameternavn'])):
+                    print("\t%-30s\t: %s" % (metadata_xml['FiludtraekMetadata'][section]['parameternavn'][p], metadata_xml['FiludtraekMetadata'][section]['parametervaerdi'][p]))
+                else:
+                  for arg in metadata_xml['FiludtraekMetadata'][section]:
+                    print("\t%-30s\t: %s" % (arg, metadata_xml['FiludtraekMetadata'][section][arg]))
           else:
             print ('Unknown file extension')
             exit(2)   
